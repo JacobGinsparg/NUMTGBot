@@ -22,4 +22,4 @@ module.exports = (robot) ->
         if firstMatch.toUpperCase() != card.toUpperCase()
           msg.send "#{url}?type=card&name=Dismal%20Failure"
         else
-          msg.send "#{url}?type=card&name=#{card}"
+          msg.send "#{url}?type=card&name=#{encodeURIComponent(card)}"

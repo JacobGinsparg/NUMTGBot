@@ -11,7 +11,7 @@
 #   JacobGinsparg
 
 module.exports = (robot) ->
-  robot.hear /\[\[(.[\w|\,| |/]+)\]\]+/i, (msg) ->
+  robot.hear /\[\[(.[\w|\,| |/|']+)\]\]+/i, (msg) ->
     url = "http://gatherer.wizards.com/Handlers/Image.ashx"
     card = msg.match[1]
     cardCheckUrl = "https://api.deckbrew.com/mtg/cards?name=#{card}"

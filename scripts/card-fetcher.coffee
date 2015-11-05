@@ -10,5 +10,17 @@
 # Author:
 #   JacobGinsparg
 
+rCardNames = /\[\[(.*)\]\]/i
+
+# verifyCardName(cardName)
+verifyCardName = (cardName) ->
+
+
+# getCardImageUrl(cardName)
+getCardImageUrl = (cardName) ->
+
+
 module.exports = (robot) ->
-  robot.hear /\[\[(.[\w|\,| |/|'|_|(|)|.]+)\]\]+/i, (msg) ->
+  robot.hear rCardNames, (msg) ->
+    valid = verifyCardName(msg.match[1])
+    msg.send getCardImageUrl(msg.match[1]) if valid

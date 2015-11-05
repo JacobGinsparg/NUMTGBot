@@ -11,6 +11,7 @@
 #   JacobGinsparg
 
 rCardNames = /\[\[(.*)\]\]/i
+baseUrl = "http://gatherer.wizards.com/Handlers/Image.ashx"
 
 loadCardDatabase = ->
   req = new XMLHttpRequest()
@@ -23,13 +24,13 @@ loadCardDatabase = ->
   req.send()
 
 verifyCardName = (cardName, db) ->
+  cardName in db
 
-
-getCardImageUrl = (cardName, db) ->
-
+getCardImageUrl = (cardName, validCard) ->
+  fullUrl = "#{baseUrl}?type=card&name=#{validCard ? encodeURIComponent(cardName) : "Dismal%20Failure"}"
 
 module.exports = (robot) ->
   robot.hear rCardNames, (msg) ->
     cardDB = loadCardDatabase()
     valid = verifyCardName msg.match[1], cardDB
-    msg.send getCardImageUrl msg.match[1], cardDB if valid
+    msg.send getCardImageUrl msg.match[1], valid

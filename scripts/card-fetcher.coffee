@@ -12,15 +12,24 @@
 
 rCardNames = /\[\[(.*)\]\]/i
 
-# verifyCardName(cardName)
-verifyCardName = (cardName) ->
+loadCardDatabase = ->
+  req = new XMLHttpRequest()
+  req.addEventListener 'readystatechange', ->
+    if req.readyState is 4 and req.status is 200
+      data = eval '(' + req.responseText + ')'
+    else
+      data = "Error"
+  req.open 'GET', '../AllCards.json', false
+  req.send()
+
+verifyCardName = (cardName, db) ->
 
 
-# getCardImageUrl(cardName)
-getCardImageUrl = (cardName) ->
+getCardImageUrl = (cardName, db) ->
 
 
 module.exports = (robot) ->
   robot.hear rCardNames, (msg) ->
-    valid = verifyCardName(msg.match[1])
-    msg.send getCardImageUrl(msg.match[1]) if valid
+    cardDB = loadCardDatabase()
+    valid = verifyCardName msg.match[1], cardDB
+    msg.send getCardImageUrl msg.match[1], cardDB if valid

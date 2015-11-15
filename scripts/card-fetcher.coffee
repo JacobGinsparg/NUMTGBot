@@ -10,17 +10,16 @@
 # Author:
 #   JacobGinsparg
 
-loadCardDatabase = ->
-  req = new XMLHttpRequest()
-  req.addEventListener 'readystatechange', ->
-    if req.readyState is 4 and req.status is 200
-      data = eval req.responseText
-  req.open 'GET', '../AllCards.json', false
-  req.send()
+cardDatabaseUrl = "http://mtgjson.com/json/AllCards.json"
+urlBase = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name="
 
 getCardImageUrl = (cardName, cardDB) ->
-  fullUrl = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=#{if cardName in cardDB then encodeURIComponent(cardName) else "Dismal%20Failure"}"
+  encodedName = if cardName of cardDB then encodeURIComponent(cardName) else "Dismal Failure"
+  fullUrl = "#{urlBase}#{encodedName}"
 
 module.exports = (robot) ->
   robot.hear /\[\[(.*)\]\]/i, (msg) ->
-    msg.send getCardImageUrl msg.match[1], loadCardDatabase()
+    robot.http(cardDatabaseUrl)
+      .get() (err, res, body) ->
+        cards = JSON.parse body
+        msg.send getCardImageUrl(msg.match[1], cards)

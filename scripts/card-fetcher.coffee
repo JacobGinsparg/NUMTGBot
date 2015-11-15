@@ -14,7 +14,7 @@ cardDatabaseUrl = "http://mtgjson.com/json/AllCards.json"
 urlBase = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name="
 
 getCardImageUrl = (cardName, cardDB) ->
-  encodedName = if cardName of cardDB then encodeURIComponent(cardName) else "Dismal Failure"
+  encodedName = if decodeURIComponent(cardName) of cardDB then encodeURIComponent(cardName) else "Dismal%20Failure"
   fullUrl = "#{urlBase}#{encodedName}"
 
 module.exports = (robot) ->

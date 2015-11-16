@@ -3,6 +3,7 @@
 #
 # Commands:
 #   [[<card name>]]
+#   [[<left name> // <right name>]]
 #
 # Notes:
 #   Upon failure, returns Dismal Failure
@@ -13,9 +14,17 @@
 cardDatabaseUrl = "http://mtgjson.com/json/AllCards.json"
 urlBase = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name="
 
+verifyCard = (cardName, cardDB) ->
+  if cardName.search(" // ") isnt -1
+    splitCards = cardName.split " // "
+    return encodeURIComponent(cardName) if splitCards[0] of cardDB and splitCards[1] of cardDB
+  else
+    return encodeURIComponent(cardName) if cardName of cardDB
+  "Dismal%20Failure"
+
 getCardImageUrl = (cardName, cardDB) ->
-  encodedName = if decodeURIComponent(cardName) of cardDB then encodeURIComponent(cardName) else "Dismal%20Failure"
-  fullUrl = "#{urlBase}#{encodedName}"
+  verifiedCard = verifyCard(cardName, cardDB)
+  fullUrl = "#{urlBase}#{verifiedCard}"
 
 module.exports = (robot) ->
   robot.hear /\[\[(.*)\]\]/i, (msg) ->

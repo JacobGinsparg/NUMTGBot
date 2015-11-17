@@ -13,8 +13,17 @@
 
 cardDatabaseUrl = "http://mtgjson.com/json/AllCards.json"
 urlBase = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name="
+replacements = [
+  {from : '“', to : '"'},
+  {from : '”', to : '"'}
+]
+
+doReplacement = (string, pair) ->
+  return string.replace /#{pair.from}/, /#{pair.to}/, 'g'
 
 verifyCard = (cardName, cardDB) ->
+  for pair in replacements
+    cardName = doReplacement cardName, pair
   if cardName.search(" // ") isnt -1
     splitCards = cardName.split " // "
     return encodeURIComponent(cardName) if splitCards[0] of cardDB and splitCards[1] of cardDB
@@ -23,7 +32,7 @@ verifyCard = (cardName, cardDB) ->
     console.log "Not encoded: " + cardName
     matches = Object.keys(cardDB).filter (key) ->
       /Ach! Hans, Run!/.test key
-    console.log matches
+    #console.log matches
     return encodeURIComponent(cardName) if cardName of cardDB
   "Dismal%20Failure"
 

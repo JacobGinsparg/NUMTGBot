@@ -13,19 +13,20 @@
 
 cardDatabaseUrl = "http://mtgjson.com/json/AllCards.json"
 urlBase = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name="
-replacements = {
-  uniQuotes : {
-      regex : /“|”/,
-      str : "\""
-    }
-}
+replacements = [
+  {
+    needle : /“|”/,
+    correction : "\""
+  }
+]
 
-doReplacement = (str) ->
-  return str.replace replacements.uniQuotes.regex, replacements.uniQuotes.str, "g"
+doReplacement = (str, pair) ->
+  return str.replace pair.needle, pair.correction, "g"
 
 verifyCard = (cardName, cardDB) ->
-  while replacements.uniQuotes.regex.test cardName
-    cardName = doReplacement cardName
+  for pair in replacements
+    while pair.needle.test cardName
+      cardName = doReplacement cardName, pair
   if cardName.search(" // ") isnt -1
     splitCards = cardName.split " // "
     return encodeURIComponent(cardName) if splitCards[0] of cardDB and splitCards[1] of cardDB

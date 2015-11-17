@@ -19,6 +19,11 @@ verifyCard = (cardName, cardDB) ->
     splitCards = cardName.split " // "
     return encodeURIComponent(cardName) if splitCards[0] of cardDB and splitCards[1] of cardDB
   else
+    console.log "Encoded: " + encodeURIComponent(cardName)
+    console.log "Not encoded: " + cardName
+    matches = Object.keys cardDB .filter (key) ->
+      /Ach! Hans, Run!/.test key
+    console.log matches
     return encodeURIComponent(cardName) if cardName of cardDB
   "Dismal%20Failure"
 

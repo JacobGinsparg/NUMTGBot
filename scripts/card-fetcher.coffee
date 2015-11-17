@@ -31,4 +31,5 @@ module.exports = (robot) ->
     robot.http(cardDatabaseUrl)
       .get() (err, res, body) ->
         cards = JSON.parse body
+        console.log msg.match[1]
         msg.send getCardImageUrl(msg.match[1], cards)

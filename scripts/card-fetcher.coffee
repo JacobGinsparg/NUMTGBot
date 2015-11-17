@@ -21,7 +21,7 @@ verifyCard = (cardName, cardDB) ->
   else
     console.log "Encoded: " + encodeURIComponent(cardName)
     console.log "Not encoded: " + cardName
-    matches = Object.keys cardDB .filter (key) ->
+    matches = Object.keys(cardDB).filter (key) ->
       /Ach! Hans, Run!/.test key
     console.log matches
     return encodeURIComponent(cardName) if cardName of cardDB

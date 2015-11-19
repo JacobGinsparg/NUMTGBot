@@ -36,7 +36,7 @@ verifyCard = (cardName, cardDB) ->
 
 getCardImageUrl = (cardName, cardDB) ->
   verifiedCard = verifyCard(cardName, cardDB)
-  fullUrl = '#{urlBase}#{verifiedCard}'
+  fullUrl = urlBase + verifiedCard
 
 module.exports = (robot) ->
   robot.hear /\[\[(.*)\]\]/i, (msg) ->

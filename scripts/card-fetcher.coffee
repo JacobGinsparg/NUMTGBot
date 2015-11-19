@@ -11,32 +11,32 @@
 # Author:
 #   JacobGinsparg
 
-cardDatabaseUrl = "http://mtgjson.com/json/AllCards.json"
-urlBase = "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name="
+cardDatabaseUrl = 'http://mtgjson.com/json/AllCards.json'
+urlBase = 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name='
 replacements = [
   {
     needle : /“|”/,
-    correction : "\""
+    correction : '\''
   }
 ]
 
 doReplacement = (str, pair) ->
-  return str.replace pair.needle, pair.correction, "g"
+  return str.replace pair.needle, pair.correction, 'g'
 
 verifyCard = (cardName, cardDB) ->
   for pair in replacements
     while pair.needle.test cardName
       cardName = doReplacement cardName, pair
-  if cardName.search(" // ") isnt -1
-    splitCards = cardName.split " // "
+  if cardName.search(' // ') isnt -1
+    splitCards = cardName.split ' // '
     return encodeURIComponent(cardName) if splitCards[0] of cardDB and splitCards[1] of cardDB
   else
     return encodeURIComponent(cardName) if cardName of cardDB
-  "Dismal%20Failure"
+  'Dismal%20Failure'
 
 getCardImageUrl = (cardName, cardDB) ->
   verifiedCard = verifyCard(cardName, cardDB)
-  fullUrl = "#{urlBase}#{verifiedCard}"
+  fullUrl = '#{urlBase}#{verifiedCard}'
 
 module.exports = (robot) ->
   robot.hear /\[\[(.*)\]\]/i, (msg) ->

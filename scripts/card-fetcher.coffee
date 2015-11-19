@@ -16,7 +16,7 @@ urlBase = 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name='
 replacements = [
   {
     needle : /“|”/,
-    correction : '\''
+    correction : '"'
   }
 ]
 

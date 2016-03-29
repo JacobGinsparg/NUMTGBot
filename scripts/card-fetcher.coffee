@@ -17,6 +17,10 @@ replacements = [
   {
     needle : /“|”/,
     correction : '"'
+  },
+  {
+    needle : /’/,
+    correction : "'"
   }
 ]
 
